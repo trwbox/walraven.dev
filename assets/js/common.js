@@ -24,7 +24,9 @@ $(document).ready(function() {
   const cssLink = document.createElement("link");
   console.log('Running from %s', window.location.pathname)
   console.log('Running from URL', window.location.href)
+  console.log('Current css path', cssLink.href)
   cssLink.href  = "../css/jupyter.css";
+  console.log('New css path', cssLink.href)
   cssLink.rel   = "stylesheet";
   cssLink.type  = "text/css";
 
