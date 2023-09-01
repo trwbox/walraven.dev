@@ -22,6 +22,8 @@ $(document).ready(function() {
 
   // add css to jupyter notebooks
   const cssLink = document.createElement("link");
+  console.log('Running from %s', window.location.pathname)
+  console.log('Running from URL', window.location.href)
   cssLink.href  = "../css/jupyter.css";
   cssLink.rel   = "stylesheet";
   cssLink.type  = "text/css";
