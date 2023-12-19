@@ -1,15 +1,24 @@
 ---
 layout: page
 permalink: /repositories/
-title: repositories
-description: Edit the `_data/repositories.yml` and change the `github_users` and `github_repos` lists to include your own GitHub profile and repositories.
+title: GitHub Overview
+description: A quick overview with my GitHub account, and some pinned repositories.
 nav: true
 nav_order: 3
 ---
-
-## GitHub users
-
+<!-- If there is only a single user make that the title -->
 {% if site.data.repositories.github_users %}
+{% assign num_users = site.data.repositories.github_users.size %}
+{% if num_users == 1 %}
+
+## {{ site.data.repositories.github_users[0] }}
+
+{% elsif num_users > 1 %}
+
+## GitHub Users
+
+{% endif %}
+
 <div class="repositories d-flex flex-wrap flex-md-row flex-column justify-content-between align-items-center">
   {% for user in site.data.repositories.github_users %}
     {% include repository/repo_user.html username=user %}

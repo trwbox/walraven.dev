@@ -54,7 +54,7 @@ table.table a {
 
 figure,
 img {
-  max-width: 90vw;
+  max-width: 100%;
 }
 
 blockquote {
@@ -371,6 +371,7 @@ footer.sticky-bottom {
       .badge {
         color: var(--global-card-bg-color) !important;
         background-color: var(--global-theme-color) !important;
+        white-space: break-spaces;
       }
     }
   }

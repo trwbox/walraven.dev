@@ -39,13 +39,22 @@ $(document).ready(function() {
   }
 
   $('.jupyter-notebook-iframe-container iframe').each(function() {
-    $(this).contents().find("head").append(cssLink);
+    // Break up the commented line below for debugging
+    var contens = $(this).contents();
+    var head = contens.find("head");
+    head.append(cssLink);
+    var new_css = contens.find("head link");
+    //$(this).contents().find("head").append(cssLink);
 
     if (theme == "dark") {
+      console.log('Setting dark theme for juptyer iframe');
+      // Find the body element of the iframe and set the theme to dark
+      var new_data = $(this).contents().find("body").attr({
+        "data-jp-theme-light": "false",
+        "data-jp-theme-name": "JupyterLab Dark"});
+      // Wait for the iframe to load before setting the theme to 
       $(this).bind("load",function(){
-        $(this).contents().find("body").attr({
-          "data-jp-theme-light": "false",
-          "data-jp-theme-name": "JupyterLab Dark"});
+        new_data
       });
     }
   });

@@ -1,0 +1,76 @@
+{% comment %}
+# Get a random ID from 1-9999 for the PDF container 
+{% endcomment %}
+{% assign min = 1 %}
+{% assign randomNumber = "now" | date: "%N" | modulo: 9999 | plus: min %}
+
+{% comment %}
+# Try get the id, and link from the include, otherwise revert to default
+{% endcomment %}
+{%- assign id = include.id || default: "pdf-container-" | append: randomNumber -%}
+{%- assign link = include.link || default: "https://www.trwbox.com/assets/files/resume.pdf" -%}
+{%- assign style = include.style || default: null -%}
+
+<div class="pdf-container" id="{{ id }}" style="{{ style }}">
+    {% if include.title %}
+        <h2 class="pdf-container">{{ include.title }}</h2>
+    {% endif %}
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/2.11.338/pdf.min.js"></script>
+  <script>
+    {% comment %}
+    //# If the PDF URL is provided as a jekyll include parameter, use it
+    {% endcomment %}
+    pdfUrl = "{{ link }}";
+    if (pdfUrl == null || pdfUrl == undefined || pdfUrl == "") {
+      // If a link isn't provided by jekyll, try to get it from the html element
+      pdfUrl = document.getElementById("{{ id }}").attributes.link.value;
+    }
+    console.log(pdfUrl);
+
+    /* Check if a valid PDF URL is provided */
+    if (pdfUrl) {
+      /* Render the PDF using PDF.js */
+      const pdfContainer = document.getElementById("{{ id }}");
+      const loadingTask = pdfjsLib.getDocument(pdfUrl);
+
+      loadingTask.promise.then((pdf) => {
+        for (let pageNumber = 1; pageNumber <= pdf.numPages; pageNumber++) {
+          pdf.getPage(pageNumber).then((page) => {
+            const scale = 1.5;
+            const viewport = page.getViewport({ scale });
+            const canvas = document.createElement("canvas");
+            const context = canvas.getContext("2d");
+
+            canvas.height = viewport.height;
+            canvas.width = viewport.width;
+            
+            const title = pdfContainer.getElementsByTagName("h2")
+            if (title != null) {
+                pdfContainer.style.height = (viewport.height + title.offsetHeight)  + "px";
+            } else {
+                pdfContainer.style.height = viewport.height + "px";
+            }
+            pdfContainer.style.width = viewport.width + "px";
+            
+            canvas.style.padding = 0;
+            canvas.style.margin = "auto";
+            canvas.style.display = "block";
+
+            const renderContext = {
+              canvasContext: context,
+              viewport: viewport,
+            };
+
+            page.render(renderContext).promise.then(() => {
+              pdfContainer.appendChild(canvas);
+            });
+          });
+        }
+      });
+    } else {
+      /* Display an error message if no PDF URL is provided */
+      const errorText = document.createTextNode("No PDF file URL provided.");
+      document.body.appendChild(errorText);
+    }
+  </script>
+</div>
