@@ -1,4 +1,4 @@
 User-agent: *
 Disallow:
 
-Sitemap: https://www.trwbox.com/walraven.dev/sitemap.xml
+Sitemap: https://walraven.dev/sitemap.xml

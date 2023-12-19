@@ -1,9 +1,25 @@
 version: "3"
-# this file uses prebuilt image in dockerhub
+
 services:
-  jekyll:
-    image: amirpourmand/al-folio
+  al_folio:
+    # Define the dockerfile to use
+    build: 
+      context: .
+      dockerfile: ./docker/al-folio/Dockerfile
+    # Define the context to use
+    image: al-folio-local-docker
     ports:
       - 8080:8080
+      # Include the debug port
+      - 35729:35729
     volumes:
       - .:/srv/jekyll
+  
+  # resume_pdf_builder:
+  #   build: 
+  #     context: .
+  #     dockerfile: ./docker/resume-pdf-builder/Dockerfile
+  #   image: al-folio-resume-pdf-builder
+  #   volumes:
+  #     - ./_site:/site
+  #     - /assets/resume:/resume
